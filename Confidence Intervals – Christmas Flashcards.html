@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Confidence Intervals – Christmas Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#0b2a1f;--bg2:#3a0a14;--card:#fff8ec;--ink:#173a2b;--red:#b3122b;--gold:#e8b94a;--snow:#ffffff;--txt:#fdf3dc;--glow:#ffd36b;--card2:#0f3d2c;--cardtxt:#fff4dc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg1:#f6ecd6;--bg2:#f3d3cf;--card:#fffdf6;--ink:#173a2b;--txt:#4a1620;--snow:#c9e4ee;--glow:#c8921a;--card2:#14543b;color-scheme:light}}
+:root[data-theme="dark"]{color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Lora,Georgia,serif;color:var(--txt);background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow-x:hidden}
+#snow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.lights{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:26px;display:flex;justify-content:space-around;z-index:3;pointer-events:none;border-top:2px solid #2a2a2a}
+.lights i{width:10px;height:14px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;margin-top:2px;background:var(--c);box-shadow:0 0 12px 3px var(--c);animation:tw 1.6s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes tw{0%,100%{opacity:.35}50%{opacity:1}}
+main{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:44px 16px 40px}
+h1{font-family:"Mountains of Christmas",cursive;font-size:clamp(2rem,7vw,3.4rem);text-align:center;margin:8px 0 4px;color:var(--gold)}
+h1 .w{display:inline-block;white-space:nowrap}
+h1 .l{display:inline-block;animation:wave 2.4s ease-in-out infinite;animation-delay:calc(var(--i)*80ms);text-shadow:0 0 14px var(--glow)}
+@keyframes wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px) rotate(-3deg)}}
+.sub{text-align:center;margin:0 0 16px;opacity:.9}
+.bar{height:10px;border-radius:9px;background:rgba(255,255,255,.18);overflow:hidden;margin:6px 0}
+.bar b{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,var(--red) 0 10px,#fff 10px 20px);transition:width .5s}
+.meta{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:12px;flex-wrap:wrap;gap:6px}
+.scene{perspective:1400px;margin:10px 0}
+.card{position:relative;height:clamp(340px,56vh,430px);transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,1.3,.5,1);cursor:pointer;outline:none}
+.card.flip{transform:rotateY(180deg)}
+.card:focus-visible{outline:3px solid var(--gold);outline-offset:6px;border-radius:22px}
+.face{position:absolute;inset:0;border-radius:22px;padding:24px 22px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:auto;display:flex;flex-direction:column;border:5px solid var(--gold);box-shadow:0 14px 40px rgba(0,0,0,.45),inset 0 0 0 3px var(--red)}
+.front{background:var(--card);color:var(--ink);justify-content:center;align-items:center;text-align:center}
+.back{background:var(--card2);color:var(--cardtxt);transform:rotateY(180deg);justify-content:center}
+.tag{position:absolute;top:12px;left:16px;font-size:.85rem;background:var(--red);color:#fff;padding:3px 12px;border-radius:99px}
+.q{font-family:"Mountains of Christmas",cursive;font-size:clamp(1.5rem,4.6vw,2.2rem);line-height:1.25;margin-top:16px}
+.q .w{display:inline-block;white-space:nowrap;margin-right:.28em}
+.q .l{display:inline-block;opacity:0;animation:drop .6s forwards,glint 3s 1.4s ease-in-out infinite;animation-delay:calc(var(--i)*28ms),calc(1.4s + var(--i)*60ms)}
+@keyframes drop{0%{opacity:0;transform:translateY(-40px) scale(.4) rotate(-20deg)}70%{transform:translateY(5px) scale(1.15)}100%{opacity:1;transform:none}}
+@keyframes glint{0%,80%,100%{color:inherit;text-shadow:none}90%{color:var(--red);text-shadow:0 0 10px var(--gold)}}
+.hint{position:absolute;bottom:12px;font-size:.85rem;opacity:.65}
+.a{font-size:clamp(1rem,2.9vw,1.18rem);line-height:1.6;margin:auto 0}
+.a p{margin:0 0 .55em}
+.a .w{display:inline-block;opacity:0}
+.card.flip .a .w{animation:rise .5s forwards;animation-delay:calc(.45s + var(--i)*24ms)}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.9);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+.a b{color:var(--glow)}
+.ctr{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+button{font:inherit;font-weight:600;border:2px solid var(--gold);background:var(--red);color:#fff;padding:10px 16px;border-radius:99px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+button:hover{transform:translateY(-2px) rotate(-1deg);box-shadow:0 0 14px var(--glow)}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+button.g{background:#1d7a4a}button.s{background:var(--card2)}
+button.on{box-shadow:0 0 0 3px var(--glow)}
+.done{text-align:center;font-family:"Mountains of Christmas",cursive;font-size:1.6rem;color:var(--gold);min-height:2rem;margin-top:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.q .l,.a .w{opacity:1!important}}
+</style></head><body>
+<canvas id="snow"></canvas>
+<div class="lights" id="lights" aria-hidden="true"></div>
+<main>
+<h1 id="title" aria-label="Confidence Intervals"></h1>
+<p class="sub">30 theory flashcards on the questions most likely to appear. Tap a card or press Space to flip.</p>
+<div class="meta"><span id="cnt"></span><span id="score"></span></div>
+<div class="bar" role="progressbar" aria-label="Mastered"><b id="pg"></b></div>
+<div class="scene"><div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard, press to flip">
+<div class="face front"><span class="tag" id="tag"></span><div class="q" id="q"></div><span class="hint">tap to reveal ❄</span></div>
+<div class="face back"><div class="a" id="a"></div></div></div></div>
+<div class="ctr">
+<button class="s" id="prev">‹ Prev</button><button id="flip">Flip 🎁</button><button class="s" id="next">Next ›</button></div>
+<div class="ctr">
+<button class="g" id="got">Got it ✓</button><button id="rev">Review again ↻</button>
+<button class="s" id="shuf">Shuffle 🎄</button><button class="s" id="only">Review only</button><button class="s" id="rst">Reset</button></div>
+<div class="done" id="done" aria-live="polite"></div>
+</main>
+<script>
+var D=[
+[2,"Probability theory vs statistics: what is the key difference in what is assumed known?","<b>Probability theory</b> assumes complete information: the population distribution, mean and variance are known.<br><b>Statistics</b> does not: we only have a sample and must infer the population."],
+[3,"Define statistics. Why do we need it?","Drawing <b>conclusions about a population</b> from the <b>limited evidence in a sample</b>. We need it because in practice we don’t know the population’s distribution, mean or variance. If we did, sampling would be pointless."],
+[2,"When is the ‘complete information’ assumption of probability theory reasonable?","In examples such as <b>rolling dice</b> or ‘invented’ examples, e.g. sampling from a population whose characteristics are known."],
+[4,"What population features do we usually infer from a sample?","The population <b>mean</b> (centrality) and <b>variance</b> (dispersion)."],
+[5,"Distinguish a population parameter from a sample statistic. Give the main examples.","Parameters describe the <b>population</b> (μ, σ²). Statistics are computed from the <b>sample</b> (sample mean x̄, sample variance s²) and are used to estimate them."],
+[6,"What is the sampling distribution of the sample mean?","The probability distribution of <b>X̄</b> over all possible samples of size n. It tells us how X̄ varies from sample to sample."],
+[7,"State the expected value and variance of X̄.","<b>E(X̄) = μ</b><br><b>Var(X̄) = σ²/n</b><br>So the standard deviation of X̄ (the standard error) is σ/√n."],
+[7,"If the parent population is normal, what is the distribution of X̄?","Also normal: <b>X̄ ~ N(μ, σ²/n)</b>, centred on μ and less spread out than the population."],
+[9,"State the Central Limit Theorem.","Even if X₁, X₂, …, Xₙ are <b>not normally distributed</b>, X̄ is <b>approximately normal</b> in most cases when the sample size is <b>large</b>."],
+[9,"What sample size counts as ‘large’ for the CLT and the CI formulas?","Typically <b>n ≥ 25</b>."],
+[9,"Why is the sampling distribution of X̄ often not directly usable in practice?","It needs μ and σ², and <b>usually we do not know their values</b>. We use sample data to estimate them instead."],
+[8,"What is the standard error of the mean, and why does it matter?","The <b>standard deviation of X̄ = σ/√n</b>. It measures the typical sampling error of x̄ and is the building block of the confidence interval. It shrinks as n grows."],
+[8,"How do we standardise X̄ so we can use the normal table?","<b>Z = (X̄ − μ) / (σ/√n)</b>, which follows <b>N(0, 1)</b>."],
+[13,"Why does the sample mean usually differ from the population mean?","Because of <b>chance variation</b> in the composition of the sample. A sample is never perfectly representative of its population."],
+[14,"Why quote a confidence interval instead of a single estimate?","A single value ignores estimation error. An interval gives a <b>range of values together with a probability</b>, quantifying the likely size of the error."],
+[14,"Interpret: ‘x̄ = 70, with probability 0.95 the true μ lies between 67 and 73’.","70 is the point estimate. <b>[67, 73]</b> is the 95% confidence interval. We are 95% confident it contains the true μ."],
+[15,"Give the formal definition of a 100(1 − α)% confidence interval.","A range of values for an unknown population parameter such that, based on the sample evidence, the <b>probability that the parameter lies within the range is 1 − α</b>."],
+[15,"What is α? What confidence level does α = 0.05 give?","α is the <b>probability the interval misses the parameter</b>. With α = 0.05 the level is 100 × (1 − 0.05) = <b>95%</b>."],
+[16,"Give the CI formula for μ when the population variance is KNOWN (n ≥ 25).","<b>x̄ ± z₀.₀₂₅ × σ/√n</b>, with z₀.₀₂₅ = 1.96 for 95% confidence."],
+[16,"What does z₀.₀₂₅ = 1.96 represent?","The critical value of the standard normal that cuts off <b>2.5% in each tail</b>, so the middle <b>95%</b> lies between −1.96 and +1.96."],
+[18,"Give the CI formula for μ when the population variance is UNKNOWN (n ≥ 25).","<b>x̄ ± 1.96 × s/√n</b>. The <b>sample standard deviation s</b> replaces the unknown σ. The critical value stays 1.96."],
+[19,"For a proportion CI, what are n, X and p, and which distribution is involved?","<b>n</b> = number of trials (sample size). <b>X</b> = number of successes. <b>p</b> = population proportion (probability of success). X follows a <b>binomial</b> distribution, bin(n, p)."],
+[20,"How is the binomial approximated when building a CI for p?","<b>X ~ bin(n, p)</b> is approximated by <b>X ~ N(np, np(1 − p))</b>, so the normal critical value 1.96 can be used."],
+[20,"What is p̂ and what is its approximate distribution?","<b>p̂ = X/n</b> is the sample proportion of successes. It is approximately <b>N(p, p(1 − p)/n)</b>."],
+[21,"Give the 95% CI formula for a population proportion p.","<b>p̂ ± 1.96 × √( p̂(1 − p̂) / n )</b>"],
+[21,"When is the large-sample proportion CI valid? State the rule of thumb.","When the sample size is reasonably large. Rule of thumb: <b>n·p̂·(1 − p̂) ≥ 9</b>."],
+[0,"How does the sample size affect the width of a confidence interval?","Larger n makes the interval <b>narrower</b> (more precise), because the margin of error is proportional to <b>1/√n</b>."],
+[0,"How does the confidence level affect the width of a confidence interval?","A higher confidence level needs a <b>larger critical z</b> (e.g. 99% uses about 2.58 vs 1.96), so the interval is <b>wider</b>. More certainty costs precision."],
+[24,"How do you use a confidence interval to judge a claim about a parameter?","If the claimed value <b>lies outside</b> the CI, the data do not support the claim, so we <b>should not believe it</b>. If it lies inside, the data are consistent with it."],
+[0,"CI for μ vs CI for p: what are the key differences?","<b>μ:</b> x̄ ± 1.96·σ/√n (use s if σ unknown). <b>p:</b> p̂ ± 1.96·√(p̂(1 − p̂)/n). Both need a large sample (n ≥ 25 for μ, n·p̂(1 − p̂) ≥ 9 for p) and rely on the normal approximation."]
+];
+var order=D.map(function(_,i){return i}),pos=0,st={},onlyRev=false;
+var $=function(i){return document.getElementById(i)};
+function letters(t,cls){var n=0;return t.split(" ").map(function(w){return '<span class="w">'+w.split("").map(function(c){return '<span class="l" style="--i:'+(n++)+'">'+c+'</span>'}).join("")+'</span>'}).join(" ")}
+function words(h){var n=0,d=document.createElement("div");d.innerHTML=h;
+function walk(nd){var o="";nd.childNodes.forEach(function(c){if(c.nodeType===3){o+=c.textContent.split(/\s+/).filter(Boolean).map(function(w){return '<span class="w" style="--i:'+(n++)+'">'+w+'</span>'}).join(" ")+" "}else if(c.nodeName==="BR"){o+="<br>"}else{o+="<"+c.nodeName.toLowerCase()+">"+walk(c)+"</"+c.nodeName.toLowerCase()+">"}});return o}
+return "<p>"+walk(d)+"</p>"}
+$("title").innerHTML=letters("Confidence Intervals ❄ Flashcards");
+var L=$("lights"),cols=["#ff3b4e","#ffd36b","#3fe08a","#5cc8ff"];
+for(var i=0;i<22;i++){var e=document.createElement("i");e.style.setProperty("--c",cols[i%4]);e.style.setProperty("--d",(i*0.23)+"s");L.appendChild(e)}
+function list(){return onlyRev?order.filter(function(i){return st[i]==="r"}):order}
+function show(){var l=list(),c=$("card");c.classList.remove("flip");
+if(!l.length){$("q").innerHTML=letters("All clear! Nothing to review.");$("a").innerHTML="";$("tag").textContent="🎅";$("cnt").textContent="0 cards";stats();return}
+if(pos>=l.length)pos=0;if(pos<0)pos=l.length-1;
+var k=D[l[pos]];$("tag").textContent=k[0]?"Slide "+k[0]:"Key idea";
+$("q").innerHTML=letters(k[1]);$("a").innerHTML=words(k[2]);
+$("cnt").textContent="Card "+(pos+1)+" of "+l.length;stats()}
+function stats(){var g=0,r=0;for(var k in st){if(st[k]==="g")g++;else r++}
+$("score").textContent="✓ "+g+"   ↻ "+r;$("pg").style.width=(g/D.length*100)+"%";
+$("done").textContent=g===D.length?"🎄 Merry Christmas! You mastered all 30 cards! 🎁":""}
+function flip(){$("card").classList.toggle("flip")}
+function go(d){pos+=d;show()}
+function mark(v){var l=list();if(!l.length)return;st[l[pos]]=v;if(onlyRev&&v==="g"){show()}else go(1)}
+$("card").onclick=flip;$("flip").onclick=flip;$("prev").onclick=function(){go(-1)};$("next").onclick=function(){go(1)};
+$("got").onclick=function(){mark("g")};$("rev").onclick=function(){mark("r")};
+$("shuf").onclick=function(){for(var i=order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=order[i];order[i]=order[j];order[j]=t}pos=0;show()};
+$("only").onclick=function(){onlyRev=!onlyRev;this.classList.toggle("on",onlyRev);pos=0;show()};
+$("rst").onclick=function(){st={};onlyRev=false;$("only").classList.remove("on");order=D.map(function(_,i){return i});pos=0;show()};
+document.addEventListener("keydown",function(e){if(e.target.tagName==="BUTTON")return;
+if(e.key==="ArrowRight")go(1);else if(e.key==="ArrowLeft")go(-1);else if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}});
+var cv=$("snow"),x=cv.getContext("2d"),F=[],W,H;
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}rs();addEventListener("resize",rs);
+var sc=getComputedStyle(document.documentElement).getPropertyValue("--snow").trim()||"#fff";
+for(var i=0;i<90;i++)F.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*3+1,s:Math.random()*1+.4,d:Math.random()*Math.PI*2});
+if(!matchMedia("(prefers-reduced-motion:reduce)").matches)(function t(){x.clearRect(0,0,W,H);x.fillStyle=sc;x.globalAlpha=.85;
+F.forEach(function(f){f.y+=f.s;f.d+=.02;f.x+=Math.sin(f.d)*.6;if(f.y>H){f.y=-5;f.x=Math.random()*W}x.beginPath();x.arc(f.x,f.y,f.r,0,7);x.fill()});requestAnimationFrame(t)})();
+show();
+</script></body></html>
